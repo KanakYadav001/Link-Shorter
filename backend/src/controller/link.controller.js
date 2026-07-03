@@ -1,6 +1,6 @@
 const linkModel = require('../model/link.model');
 
-const uuid = require('uuid');
+const {nanoid} = require('nanoid');
 
 
 async function createLink(req, res) {
@@ -8,18 +8,18 @@ async function createLink(req, res) {
 
     const link = await linkModel.create({
         url,
-        uuid : uuid.v4(),
+        nanoid : nanoid(8),
     });
 
 
-    res.status(201).json({ message: 'Link created successfully', link : "ty/"+link.uuid });
+    res.status(201).json({ message: 'Link created successfully', link : "ty/"+link.nanoid });
 }
 
 
 async function getLink(req, res) {
     const { id } = req.params;
 
-    const link = await linkModel.findOne({ uuid : id });
+    const link = await linkModel.findOne({ nanoid : id });
 
     if(!link) {
         return res.status(404).json({ message: 'Link not found' });

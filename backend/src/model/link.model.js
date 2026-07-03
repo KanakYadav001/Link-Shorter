@@ -6,9 +6,10 @@ const LinkSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
-    uuid : {
+    nanoid : {
         type : String,
         required : true,
+        unique : true,
     }
 
 },{timestamps : true});
