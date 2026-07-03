@@ -19,7 +19,7 @@ async function createLink(req, res) {
 async function getLink(req, res) {
     const { id } = req.params;
 
-    const link = await linkModel.findOne({ uuid : uuid });
+    const link = await linkModel.findOne({ uuid : id });
 
     if(!link) {
         return res.status(404).json({ message: 'Link not found' });
