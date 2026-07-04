@@ -1,0 +1,45 @@
+import React from "react";
+import { Link } from "react-router";
+import Button from "./Button";
+
+const navLinks = [
+  {
+    title: "Home",
+    link: "/",
+  },
+  {
+    title: "Features",
+    link: "/features",
+  },
+  {
+    title: "Pricing",
+    link: "/pricing",
+  },
+  {
+    title: "Contact",
+    link: "/contact",
+  },
+];
+
+function Header() {
+  return (
+    <header className="w-full max-w-350 rounded-xl shadow-[0_8px_10px_rgba(0,0,0,0.25)] shadow-zinc-100 mx-auto py-5 px-6 flex items-center justify-between my-2">
+      <Link to="/" className="text-2xl font-semibold text-zinc-800">
+        <span className="text-blue-500">link</span>shorter
+      </Link>
+
+      <nav className="hidden md:flex items-center gap-6 text-zinc-700 font-medium">
+        {navLinks.map((link) => (
+          <Link to={link.link}>{link.title}</Link>
+        ))}
+      </nav>
+
+      <div className="flex items-center gap-4">
+        <Button>Login</Button>
+        <Button isPrimary={true}>Signup</Button>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
