@@ -1,5 +1,5 @@
 import React from "react";
-import InputButton from "./InputButton";
+import InputButton from "../Common/InputButton";
 
 function HeroSection() {
   return (

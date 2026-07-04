@@ -1,7 +1,6 @@
 import React from "react";
-import Header from "../Components/Header";
-import HeroSection from "../Components/HeroSection";
-import FeaturesSection from "../Components/FeaturesSection";
+import HeroSection from "../Components/Home/HeroSection";
+import FeaturesSection from "../Components/Home/FeaturesSection";
 
 function Home() {
   return (
