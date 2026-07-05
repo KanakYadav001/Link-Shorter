@@ -1,10 +1,17 @@
 import React from "react";
 import Button from "./Button";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
-function InputButton({ className, placeholder }) {
+function InputButton({ className, placeholder, buttonText }) {
   return (
     <form
-      className={`h-16 md:w-160 max-w-full p-2 rounded-xl border-2 border-zinc-100 flex justify-between items-center ${className} focus-within:border-blue-500 duration-200`}
+      className={twMerge(
+        clsx(
+          "h-16 md:w-160 max-w-full p-2 rounded-xl border-2 border-zinc-100 flex justify-between items-center focus-within:border-blue-500 duration-200",
+          className,
+        ),
+      )}
     >
       <input
         placeholder={placeholder}
@@ -13,7 +20,7 @@ function InputButton({ className, placeholder }) {
       />
 
       <Button isPrimary={true} className="shrink-0 h-full">
-        Shorten URL
+        {buttonText}
       </Button>
     </form>
   );

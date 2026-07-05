@@ -7,7 +7,7 @@ function DasboardPageLayout({ title, children }) {
         <h1 className="text-2xl font-semibold text-zinc-800">{title}</h1>
       </header>
 
-      <section className="h-full w-full p-4">{children}</section>
+      <section className="h-full w-full p-8">{children}</section>
     </main>
   );
 }

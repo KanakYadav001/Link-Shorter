@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 import { IoMdLink } from "react-icons/io";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
+import Logo from "../Components/Common/Logo";
 
 function DashboardLayout() {
   const navLinks = [
@@ -38,9 +39,7 @@ function DashboardLayout() {
   return (
     <main className="h-screen w-full flex">
       <div className="h-full w-1/6 border-r border-zinc-200 p-6 shrink-0">
-        <Link to="/" className="text-2xl font-semibold text-zinc-800">
-          <span className="text-blue-500">link</span>shorter
-        </Link>
+        <Logo />
 
         <nav className="mt-8 flex flex-col gap-4">
           {navLinks.map((link) => (
