@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 import { IoMdLink } from "react-icons/io";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
-import Logo from "../Components/Common/Logo";
+import Logo from "../../Components/Common/Logo";
 
 function DashboardLayout() {
   const navLinks = [

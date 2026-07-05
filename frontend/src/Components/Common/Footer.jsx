@@ -36,7 +36,11 @@ function Footer() {
             Subscribe to get product updates and useful link management tips.
           </p>
 
-          <InputButton placeholder="Enter your email" className="mt-6 border-zinc-300" />
+          <InputButton
+            placeholder="Enter your email"
+            className="mt-6 border-zinc-300"
+            buttonText="Subscribe"
+          />
         </div>
 
         <div className="flex items-center gap-6 text-zinc-500 mx-auto w-fit mt-12 text-3xl">

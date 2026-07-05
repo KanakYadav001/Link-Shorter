@@ -15,7 +15,11 @@ function HeroSection() {
         teams.
       </p>
 
-      <InputButton className="" placeholder="Enter your URL here" />
+      <InputButton
+        className=""
+        placeholder="Enter your URL here"
+        buttonText="Shorten Link"
+      />
     </section>
   );
 }

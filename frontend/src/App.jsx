@@ -1,15 +1,15 @@
 import React from "react";
 import { Routes, Route } from "react-router";
-import Home from "./pages/Home";
 import MainLayout from "./Components/Common/MainLayout";
+import Home from "./Pages/Home/Home";
 import BankLayout from "./Components/Common/BankLayout";
-import DashboardLayout from "./Pages/DashboardLayout";
-import Dashboard from "./Pages/Dashboard";
-import CreateLink from "./Pages/CreateLink";
-import MyLink from "./Pages/MyLink";
-import Analytics from "./Pages/Analytics";
-import Settings from "./Pages/Settings";
-import DasboardPageLayout from "./Pages/DasboardPageLayout";
+import DashboardLayout from "./Pages/Dashboard/DashboardLayout";
+import DasboardPageLayout from "./Pages/Dashboard/DasboardPageLayout";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import CreateLink from "./Pages/Dashboard/CreateLink";
+import MyLink from "./Pages/Dashboard/MyLink";
+import Analytics from "./Pages/Dashboard/Analytics";
+import Settings from "./Pages/Dashboard/Settings";
 
 function App() {
   return (

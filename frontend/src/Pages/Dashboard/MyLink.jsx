@@ -1,5 +1,5 @@
 import React from "react";
-import InputButton from "../Components/Common/InputButton";
+import InputButton from "../../Components/Common/InputButton";
 import { IoMdLink } from "react-icons/io";
 import { MdDeleteOutline, MdOutlineContentCopy } from "react-icons/md";
 

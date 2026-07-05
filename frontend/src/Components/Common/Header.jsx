@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import Button from "./Button";
 import Logo from "./Logo";
 
@@ -29,12 +29,19 @@ function Header() {
 
       <nav className="hidden md:flex items-center gap-6 text-zinc-700 font-medium">
         {navLinks.map((link) => (
-          <Link to={link.link}>{link.title}</Link>
+          <NavLink
+            to={link.link}
+            className={({ isActive }) =>
+              `text-lg hover:text-blue-500 duration-200 ${isActive ? "text-blue-500" : ""}`
+            }
+          >
+            {link.title}
+          </NavLink>
         ))}
       </nav>
 
       <div className="flex items-center gap-4">
-        <Button>Login</Button>
+        <Button isPrimary={false}>Login</Button>
         <Button isPrimary={true}>Signup</Button>
       </div>
     </header>

@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../Components/Common/Button";
-import Avatar from "../Components/Common/Avatar";
+import Button from "../../Components/Common/Button";
+import Avatar from "../../Components/Common/Avatar";
 import { IoMdLink } from "react-icons/io";
 import { TbHandClick } from "react-icons/tb";
 import { FaEye } from "react-icons/fa";
