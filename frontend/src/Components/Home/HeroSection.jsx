@@ -1,9 +1,12 @@
 import React from "react";
 import InputButton from "../Common/InputButton";
+import UrlShortnerDemo from "../Common/UrlShortnerDemo";
 
 function HeroSection() {
   return (
-    <section className="w-full my-12 flex justify-center items-center pt-7 flex-col">
+    <section className="w-full my-6 flex justify-center items-center pt-7 flex-col">
+      <UrlShortnerDemo className="my-4" />
+
       <h1 className="text-5xl md:text-6xl font-semibold text-center text-zinc-900 flex flex-col gap-2">
         <p>Shorten URLS.</p>
         <p>Track Every Click.</p>
