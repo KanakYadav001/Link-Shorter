@@ -30,8 +30,14 @@ function Analytics() {
         {analyticsData.map((data, index) => (
           <div
             key={index}
-            className="w-full p-6 border border-zinc-200 rounded-xl shadow-[0_0px_10px_rgba(0,0,0,0.05)] flex flex-col items-start"
+            className="w-full p-6 border border-zinc-200 rounded-xl shadow-[0_0px_10px_rgba(0,0,0,0.05)] flex flex-col items-start relative overflow-hidden"
           >
+            <span
+              className={`${data.color} absolute right-2 bottom-2 text-[10rem] opacity-5 -rotate-10`}
+            >
+              {data.logo}
+            </span>
+
             <span className={`p-4 ${data.color} rounded-xl text-2xl mb-4`}>
               {data.logo}
             </span>
