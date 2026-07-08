@@ -1,8 +1,26 @@
 import React from "react";
 import InputButton from "../Common/InputButton";
 import UrlShortnerDemo from "../Common/UrlShortnerDemo";
+import useUser from "../../hooks/useUser";
+import { useNavigate } from "react-router";
 
 function HeroSection() {
+  const { data: user, isLoading, isError } = useUser();
+
+  const navigate = useNavigate();
+
+  const handleShortenClick = (e) => {
+    e.preventDefault();
+
+    if (!user?.data) {
+      navigate("/login");
+      return;
+    }
+
+    // TODO: Implement the URL shortening logic here
+    alert("Shorten button clicked! Implement the shortening logic here.");
+  };
+
   return (
     <section className="w-full my-6 flex justify-center items-center pt-7 flex-col">
       <UrlShortnerDemo className="my-4" />
@@ -22,6 +40,7 @@ function HeroSection() {
         className=""
         placeholder="Enter your URL here"
         buttonText="Shorten Link"
+        onSubmit={handleShortenClick}
       />
     </section>
   );

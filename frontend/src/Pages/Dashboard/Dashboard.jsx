@@ -4,6 +4,7 @@ import Avatar from "../../Components/Common/Avatar";
 import { IoMdLink } from "react-icons/io";
 import { TbHandClick } from "react-icons/tb";
 import { FaEye } from "react-icons/fa";
+import useUser from "../../hooks/useUser";
 
 function Dashboard() {
   const analyticsData = [
@@ -49,14 +50,26 @@ function Dashboard() {
     },
   ];
 
+  const { data: user, isLoading, isError } = useUser();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error loading user data.</p>;
+  }
+
   return (
     <main className="w-full pb-4">
       <header className="w-full p-10 bg-blue-500/5 flex items-center gap-8 border border-blue-500/10 rounded-xl">
-        <Avatar>JD</Avatar>
+        <Avatar className="scale-180">
+          {user?.data?.username?.charAt(0)?.toUpperCase() || "U"}
+        </Avatar>
 
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold text-zinc-800">
-            Welcome back, John Doe!
+            Welcome back, {user?.data?.username || "User"}!
           </h1>
           <p className="text-zinc-500">Welcome to your dashboard!</p>
           <Button isPrimary={true} className="w-fit mt-4">

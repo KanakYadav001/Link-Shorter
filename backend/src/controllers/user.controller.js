@@ -9,6 +9,8 @@ export const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    console.log("Registering user with data:", { username, email, password });
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });

@@ -10,6 +10,9 @@ import CreateLink from "./Pages/Dashboard/CreateLink";
 import MyLink from "./Pages/Dashboard/MyLink";
 import Analytics from "./Pages/Dashboard/Analytics";
 import Settings from "./Pages/Dashboard/Settings";
+import Login from "./Pages/Auth/Login";
+import Register from "./Pages/Auth/Register";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   return (
@@ -20,7 +23,16 @@ function App() {
         </Route>
 
         <Route element={<BankLayout />}>
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route
               index
               element={

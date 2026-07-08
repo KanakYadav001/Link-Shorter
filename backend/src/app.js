@@ -5,11 +5,18 @@ import linksRouter from "./routes/Links.routes.js";
 import Link from "./models/Links.model.js";
 import LinksVisitor from "./models/LinksVisitor.mode.js";
 import Analytics from "./models/Analytics.model.js";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 app.get("/api", (req, res) => {
   res.send({
