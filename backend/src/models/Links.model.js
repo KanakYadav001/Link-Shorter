@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 // Links Schema
 const LinksSchema = new mongoose.Schema(
@@ -47,12 +48,24 @@ const LinksSchema = new mongoose.Schema(
 );
 
 // Pre-save middleware to hash the password if it is set
-LinksSchema.pre("save", async function (next) {
+LinksSchema.pre("save", async function () {
   if (this.password.isPasswordProtected && this.isModified("password.value")) {
     const salt = await bcrypt.genSalt(10);
     this.password.value = await bcrypt.hash(this.password.value, salt);
   }
-  next();
+});
+
+LinksSchema.pre("findOneAndUpdate", async function () {
+  const update = this.getUpdate();
+
+  if (
+    update.password &&
+    update.password.isPasswordProtected &&
+    update.password.value
+  ) {
+    const salt = await bcrypt.genSalt(10);
+    update.password.value = await bcrypt.hash(update.password.value, salt);
+  }
 });
 
 // Method to compare entered password with hashed password

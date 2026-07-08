@@ -1,6 +1,7 @@
 import express from "express";
 import userRouter from "./routes/User.routes.js";
 import cookieParser from "cookie-parser";
+import linksRouter from "./routes/Links.routes.js";
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.get("/api", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/links", linksRouter);
 
 export default app;
