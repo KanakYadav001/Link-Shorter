@@ -1,17 +1,18 @@
-const express = require("express");
-
-const cookieParser = require("cookie-parser");
-const UserRouter = require("./routers/user.route");
-const LinkRouter = require("./routers/link.route");
-const cors = require("cors");
+import express from "express";
+import userRouter from "./routes/User.routes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(cors());
-app.use(cookieParser());
 app.use(express.json());
+app.use(cookieParser());
 
-app.use("/api", UserRouter);
-app.use("/", LinkRouter);
+app.get("/api", (req, res) => {
+  res.send({
+    message: "Welcome to the API",
+  });
+});
 
-module.exports = app;
+app.use("/api/users", userRouter);
+
+export default app;

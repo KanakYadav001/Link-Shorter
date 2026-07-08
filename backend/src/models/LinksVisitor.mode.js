@@ -1,0 +1,53 @@
+import mongoose from "mongoose";
+import crypto from "crypto";
+
+const LinksVisitorSchema = new mongoose.Schema(
+  {
+    linkId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Links",
+      required: true,
+    },
+    ipAddress: {
+      type: String,
+      required: true,
+    },
+    userAgent: {
+      type: String,
+      required: true,
+    },
+    hashedIpAddress: {
+      type: String,
+      required: true,
+    }, // Combined field for hashed IP address and user agent
+    country: {
+      type: String,
+      required: true,
+      default: "Unknown", // Default value if country is not provided
+    },
+  },
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+  },
+);
+
+// Pre-save middleware to hash the IP address before saving (ipAddress + userAgent) using crypto
+LinksVisitorSchema.pre("save", async function (next) {
+  if (this.isModified("ipAddress") || this.isModified("userAgent")) {
+    const hash = crypto.createHash("sha256");
+    hash.update(this.ipAddress + this.userAgent);
+    this.hashedIpAddress = hash.digest("hex");
+  }
+  next();
+});
+
+// Method to convert ipAddress + userAgent to hashedIpAddress
+LinksVisitorSchema.methods.hashIpAddressAndUserAgent = function () {
+  const hash = crypto.createHash("sha256");
+  hash.update(this.ipAddress + this.userAgent);
+  return hash.digest("hex");
+};
+
+const LinksVisitor = mongoose.model("LinksVisitor", LinksVisitorSchema);
+
+export default LinksVisitor;
