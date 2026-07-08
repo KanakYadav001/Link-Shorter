@@ -32,19 +32,21 @@ const LinksVisitorSchema = new mongoose.Schema(
 );
 
 // Pre-save middleware to hash the IP address before saving (ipAddress + userAgent) using crypto
-LinksVisitorSchema.pre("save", async function (next) {
+LinksVisitorSchema.pre("validate", async function () {
   if (this.isModified("ipAddress") || this.isModified("userAgent")) {
     const hash = crypto.createHash("sha256");
     hash.update(this.ipAddress + this.userAgent);
     this.hashedIpAddress = hash.digest("hex");
   }
-  next();
 });
 
 // Method to convert ipAddress + userAgent to hashedIpAddress
-LinksVisitorSchema.methods.hashIpAddressAndUserAgent = function () {
+LinksVisitorSchema.statics.hashIpAddressAndUserAgent = function ({
+  ipAddress,
+  userAgent,
+}) {
   const hash = crypto.createHash("sha256");
-  hash.update(this.ipAddress + this.userAgent);
+  hash.update(ipAddress + userAgent);
   return hash.digest("hex");
 };
 
