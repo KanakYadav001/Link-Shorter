@@ -14,6 +14,10 @@ const LinksSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    shortLink: {
+      type: String,
+      required: true,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
@@ -83,6 +87,8 @@ LinksSchema.methods.isExpired = function () {
   }
   return false; // Link is not expired
 };
+
+LinksSchema.index({ userId: 1 });
 
 const Links = mongoose.model("Links", LinksSchema);
 

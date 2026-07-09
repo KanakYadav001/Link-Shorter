@@ -1,5 +1,7 @@
+import Analytics from "../models/Analytics.model.js";
 import Link from "../models/Links.model.js";
 import { nanoid } from "nanoid";
+import LinksVisitor from "../models/LinksVisitor.model.js";
 
 export const createLink = async (req, res) => {
   try {
@@ -8,8 +10,8 @@ export const createLink = async (req, res) => {
     const {
       slug: userSlug,
       originalUrl,
-      title,
-      password,
+      title: userTitle,
+      password = {},
       isOneTimeUse,
     } = req.body;
 
@@ -30,6 +32,9 @@ export const createLink = async (req, res) => {
     // if the slug is not provided, generate a random one
     const slug = userSlug || nanoid(6);
 
+    // if the title is not provided, use the originalUrl as the title
+    const title = userTitle || originalUrl;
+
     const newLink = new Link({
       slug,
       originalUrl,
@@ -41,14 +46,22 @@ export const createLink = async (req, res) => {
       },
       isOneTimeUse,
       userId,
+      shortLink: `${req.protocol}://${req.get("host")}/${slug}`,
     });
 
     await newLink.save();
 
+    // Create a new analytics document for the link
+    const analytics = new Analytics({
+      linkId: newLink._id,
+      totalClicks: 0,
+      totalUniqueClicks: 0,
+    });
+    await analytics.save();
+
     res.status(201).json({
       message: "Link created successfully",
       data: newLink,
-      shortUrl: `${req.protocol}://${req.get("host")}/${slug}`,
     });
   } catch (error) {
     console.error("Error creating link:", error);

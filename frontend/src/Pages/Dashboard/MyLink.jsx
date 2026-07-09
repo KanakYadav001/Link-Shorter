@@ -1,86 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import InputButton from "../../Components/Common/InputButton";
 import { IoMdLink } from "react-icons/io";
 import { MdDeleteOutline, MdOutlineContentCopy } from "react-icons/md";
+import useLinks from "../../hooks/useLinks.";
+import useDeleteLink from "../../hooks/useDeleteLink";
 
 function MyLink() {
-  const links = [
-    {
-      shortLink: "https://linkshorter.com/abc123",
-      originalLink:
-        "https://www.example.com/very/long/url/that/needs/to/be/shortened",
-      clicks: 123,
-      uniqueVisitors: 45,
-    },
-    {
-      shortLink: "https://linkshorter.com/xyz456",
-      originalLink: "https://www.example.com/another/long/url/to/shorten",
-      clicks: 456,
-      uniqueVisitors: 78,
-    },
-    {
-      shortLink: "https://linkshorter.com/def789",
-      originalLink: "https://www.example.com/yet/another/long/url/to/shorten",
-      clicks: 789,
-      uniqueVisitors: 12,
-    },
-    {
-      shortLink: "https://linkshorter.com/ghi012",
-      originalLink: "https://www.example.com/short/url",
-      clicks: 101,
-      uniqueVisitors: 34,
-    },
-    {
-      shortLink: "https://linkshorter.com/jkl345",
-      originalLink: "https://www.example.com/another/short/url",
-      clicks: 202,
-      uniqueVisitors: 56,
-    },
-    {
-      shortLink: "https://linkshorter.com/mno678",
-      originalLink: "https://www.example.com/yet/another/short/url",
-      clicks: 303,
-      uniqueVisitors: 78,
-    },
-    {
-      shortLink: "https://linkshorter.com/abc123",
-      originalLink:
-        "https://www.example.com/very/long/url/that/needs/to/be/shortened",
-      clicks: 123,
-      uniqueVisitors: 45,
-    },
-    {
-      shortLink: "https://linkshorter.com/xyz456",
-      originalLink: "https://www.example.com/another/long/url/to/shorten",
-      clicks: 456,
-      uniqueVisitors: 78,
-    },
-    {
-      shortLink: "https://linkshorter.com/def789",
-      originalLink: "https://www.example.com/yet/another/long/url/to/shorten",
-      clicks: 789,
-      uniqueVisitors: 12,
-    },
-    {
-      shortLink: "https://linkshorter.com/ghi012",
-      originalLink: "https://www.example.com/short/url",
-      clicks: 101,
-      uniqueVisitors: 34,
-    },
-    {
-      shortLink: "https://linkshorter.com/jkl345",
-      originalLink: "https://www.example.com/another/short/url",
-      clicks: 202,
-      uniqueVisitors: 56,
-    },
-    {
-      shortLink: "https://linkshorter.com/mno678",
-      originalLink: "https://www.example.com/yet/another/short/url",
-      clicks: 303,
-      uniqueVisitors: 78,
-    },
-    ,
-  ];
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredLinks, setFilteredLinks] = useState([]);
+
+  const { data: links, isLoading, isError, error } = useLinks();
+  const deleteLinkMutation = useDeleteLink();
+
+  const handleDeleteLink = (linkId) => {
+    deleteLinkMutation.mutate(linkId);
+  };
+
+  const handleCopyLink = (link) => {
+    const shortLink = link.shortLink;
+
+    navigator.clipboard
+      .writeText(shortLink)
+      .then(() => {
+        console.log(`Copied link: ${shortLink}`);
+      })
+      .catch((err) => {
+        console.error("Failed to copy link: ", err);
+      });
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (searchTerm.trim() === "") {
+      setFilteredLinks(links?.data || []);
+    } else {
+      setFilteredLinks(
+        links?.data?.filter(
+          (link) =>
+            link.shortLink.includes(searchTerm) ||
+            link.originalUrl.includes(searchTerm) ||
+            (link.title && link.title.includes(searchTerm)),
+        ) || [],
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!links?.data) return;
+
+    if (searchTerm.trim() === "") {
+      setFilteredLinks(links.data);
+    } else {
+      setFilteredLinks(
+        links.data.filter(
+          (link) =>
+            link.shortLink.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            link.originalUrl.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (link.title &&
+              link.title.toLowerCase().includes(searchTerm.toLowerCase())),
+        ),
+      );
+    }
+  }, [searchTerm, links]);
 
   return (
     <main className="w-full pb-4">
@@ -88,51 +70,75 @@ function MyLink() {
         placeholder="Search links by slug, URL, or title..."
         className="md:w-full"
         buttonText="Search Links"
+        onSubmit={handleSearch}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        type="text"
       />
 
       <div className="w-full mt-8 border border-zinc-200 rounded-xl overflow-hidden">
-        {links.length === 0 ? (
-          <p className="text-zinc-500 text-center py-8">
-            No recent links found.
+        {isLoading ? (
+          <p className="text-zinc-500 text-center py-8">Loading links...</p>
+        ) : isError ? (
+          <p className="text-red-500 text-center py-8">
+            Error fetching links: {error.message}
           </p>
+        ) : null}
+
+        {filteredLinks?.length === 0 ? (
+          <p className="text-zinc-500 text-center py-8">No links found.</p>
         ) : (
-          links.map((link, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-4 p-6 border-t border-b border-zinc-200 hover:bg-blue-50 transition-colors cursor-pointer"
-            >
-              <span className="p-3 bg-blue-500/10 text-blue-500 rounded-xl text-xl">
-                <IoMdLink />
-              </span>
+          filteredLinks
+            ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            ?.map((link) => (
+              <div
+                key={link._id}
+                className="flex items-center gap-4 p-6 border-t border-b border-zinc-200 hover:bg-blue-50 transition-colors cursor-pointer"
+              >
+                <span className="p-3 bg-blue-500/10 text-blue-500 rounded-xl text-xl">
+                  <IoMdLink />
+                </span>
 
-              <div className="flex flex-col gap-2">
-                <p className="text-zinc-800 font-medium">{link.shortLink}</p>
+                <div className="flex flex-col gap-2 grow min-w-0">
+                  <p className="text-zinc-800 font-medium truncate">
+                    {link.shortLink}
+                  </p>
 
-                <p className="text-zinc-500 text-sm truncate">
-                  {link.originalLink}
-                </p>
+                  <p className="text-zinc-500 text-sm truncate">
+                    {link.originalUrl}
+                  </p>
+                </div>
+
+                <div className="hidden md:flex flex-col gap-2 ml-auto">
+                  <p className="text-zinc-800 font-medium">
+                    {link.clicks || 0} Clicks
+                  </p>
+
+                  <p className="text-zinc-500 text-sm truncate">
+                    {link.uniqueVisitors || 0} Unique Visitors
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 ml-4 text-xl">
+                  <button
+                    className="text-red-400 hover:text-red-500 transition-colors cursor-pointer"
+                    onClick={() => handleDeleteLink(link._id)}
+                  >
+                    {deleteLinkMutation.isPending ? (
+                      <span className="loader"></span>
+                    ) : (
+                      <MdDeleteOutline />
+                    )}
+                  </button>
+                  <button
+                    className="text-blue-500 hover:text-blue-600 transition-colors cursor-pointer"
+                    onClick={() => handleCopyLink(link)}
+                  >
+                    <MdOutlineContentCopy />
+                  </button>
+                </div>
               </div>
-
-              <div className="flex flex-col gap-2 ml-auto">
-                <p className="text-zinc-800 font-medium">
-                  {link.clicks} Clicks
-                </p>
-
-                <p className="text-zinc-500 text-sm truncate">
-                  {link.uniqueVisitors} Unique Visitors
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 ml-4 text-xl">
-                <button className="text-red-400 hover:text-red-500 transition-colors cursor-pointer">
-                  <MdDeleteOutline />
-                </button>
-                <button className="text-blue-500 hover:text-blue-600 transition-colors cursor-pointer">
-                  <MdOutlineContentCopy />
-                </button>
-              </div>
-            </div>
-          ))
+            ))
         )}
       </div>
     </main>

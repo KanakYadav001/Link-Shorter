@@ -3,7 +3,15 @@ import Button from "./Button";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-function InputButton({ className, placeholder, buttonText, onSubmit }) {
+function InputButton({
+  className,
+  placeholder,
+  buttonText,
+  onSubmit,
+  onChange,
+  value,
+  type = "text",
+}) {
   return (
     <form
       onSubmit={onSubmit}
@@ -17,7 +25,9 @@ function InputButton({ className, placeholder, buttonText, onSubmit }) {
       <input
         placeholder={placeholder}
         className="w-full h-full outline-0 border-0 px-4 text-xl"
-        type="url"
+        type={type}
+        onChange={onChange}
+        value={value}
       />
 
       <Button isPrimary={true} className="shrink-0 h-full">

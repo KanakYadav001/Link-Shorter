@@ -3,6 +3,8 @@ import { CiLock, CiMail } from "react-icons/ci";
 import { RiAdminFill } from "react-icons/ri";
 import Button from "../../Components/Common/Button";
 import useLogin from "../../hooks/useLogin";
+import useUser from "@/hooks/useUser";
+import { Navigate } from "react-router";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,12 @@ function Login() {
   });
 
   const loginMutation = useLogin();
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+    error: userError,
+  } = useUser();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +49,10 @@ function Login() {
       });
     }
   };
+
+  if (user?.data) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <main className="w-full h-screen flex justify-center items-center pb-4">

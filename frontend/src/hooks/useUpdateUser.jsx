@@ -1,20 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "../api/authApi";
-import { useNavigate } from "react-router";
+import { updateUser } from "../api/authApi";
 import { queryClient } from "../main";
 
-const useLogin = () => {
-  const navigate = useNavigate();
-
+const useUpdateUser = () => {
   const mutation = useMutation({
-    mutationFn: loginUser,
+    mutationFn: updateUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      navigate("/dashboard");
     },
   });
 
   return mutation;
 };
 
-export default useLogin;
+export default useUpdateUser;

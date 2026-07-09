@@ -1,20 +1,20 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "../api/authApi";
 import { useNavigate } from "react-router";
+import { deleteLink } from "../api/linkApi";
 import { queryClient } from "../main";
 
-const useLogin = () => {
+const useDeleteLink = () => {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: loginUser,
+    mutationFn: (id) => deleteLink(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      navigate("/dashboard");
+      queryClient.invalidateQueries(["links"]);
+      navigate("/dashboard/my-links");
     },
   });
 
   return mutation;
 };
 
-export default useLogin;
+export default useDeleteLink;

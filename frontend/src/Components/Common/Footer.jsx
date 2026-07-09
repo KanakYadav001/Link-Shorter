@@ -7,19 +7,19 @@ function Footer() {
   const socialLinks = [
     {
       name: "Twitter",
-      url: "https://twitter.com/yourcompany",
+      url: "https://twitter.com/",
       icons: <FaXTwitter />,
       hoverColor: "hover:text-gray-900",
     },
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/company/yourcompany",
+      url: "https://www.linkedin.com/",
       icons: <FaLinkedin />,
       hoverColor: "hover:text-blue-700",
     },
     {
       name: "GitHub",
-      url: "https://github.com/yourcompany",
+      url: "https://github.com/",
       icons: <FaGithub />,
       hoverColor: "hover:text-gray-800",
     },

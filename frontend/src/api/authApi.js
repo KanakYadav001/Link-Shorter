@@ -26,3 +26,13 @@ export const getUser = async () => {
   const response = await api.get("/users/profile");
   return response.data;
 };
+
+export const updateUser = async (formData) => {
+  console.log("Updating user with data:", formData);
+  const response = await api.put("/users/profile", {
+    username: formData.username,
+    password: formData.password,
+  });
+
+  return response.data;
+};

@@ -3,9 +3,11 @@ import userRouter from "./routes/User.routes.js";
 import cookieParser from "cookie-parser";
 import linksRouter from "./routes/Links.routes.js";
 import Link from "./models/Links.model.js";
-import LinksVisitor from "./models/LinksVisitor.mode.js";
+import LinksVisitor from "./models/LinksVisitor.model.js";
 import Analytics from "./models/Analytics.model.js";
 import cors from "cors";
+import analyticsRouter from "./routes/Analytics.routes.js";
+import config from "./config/config.js";
 
 const app = express();
 
@@ -13,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: config.FRONTEND_URL,
     credentials: true,
   }),
 );
@@ -128,5 +130,6 @@ app.get("/:slug", async (req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/links", linksRouter);
+app.use("/api/analytics", analyticsRouter);
 
 export default app;

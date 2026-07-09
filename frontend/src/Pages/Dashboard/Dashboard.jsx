@@ -5,6 +5,7 @@ import { IoMdLink } from "react-icons/io";
 import { TbHandClick } from "react-icons/tb";
 import { FaEye } from "react-icons/fa";
 import useUser from "../../hooks/useUser";
+import { Link } from "react-router";
 
 function Dashboard() {
   const analyticsData = [
@@ -62,14 +63,18 @@ function Dashboard() {
 
   return (
     <main className="w-full pb-4">
-      <header className="w-full p-10 bg-blue-500/5 flex items-center gap-8 border border-blue-500/10 rounded-xl">
-        <Avatar className="scale-180">
+      <header className="w-full p-6 md:p-10 bg-blue-500/5 flex items-center gap-8 border border-blue-500/10 rounded-xl">
+        <Avatar className="scale-180 hidden md:flex">
           {user?.data?.username?.charAt(0)?.toUpperCase() || "U"}
         </Avatar>
 
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold text-zinc-800">
-            Welcome back, {user?.data?.username || "User"}!
+            Welcome back,{" "}
+            <span className="text-blue-500 capitalize">
+              {user?.data?.username || "User"}
+            </span>
+            !
           </h1>
           <p className="text-zinc-500">Welcome to your dashboard!</p>
           <Button isPrimary={true} className="w-fit mt-4">
@@ -78,7 +83,7 @@ function Dashboard() {
         </div>
       </header>
 
-      <div className="grid grid-cols-3 gap-6 my-8">
+      <div className="grid md:grid-cols-3 gap-6 my-8">
         {analyticsData.map((data, index) => (
           <div
             key={index}
@@ -97,7 +102,9 @@ function Dashboard() {
       <div className="w-full rounded-xl border border-zinc-200 shadow-[0_0px_10px_rgba(0,0,0,0.05)] my-8">
         <div className="w-full px-6 py-4 flex justify-between items-center">
           <h2 className="text-zinc-800 font-semibold text-lg">Recent Links</h2>
-          <Button isPrimary={true}>View All</Button>
+          <Link to="/dashboard/my-links" isPrimary={true}>
+            View All
+          </Link>
         </div>
 
         <div className="w-full">
@@ -115,15 +122,17 @@ function Dashboard() {
                   <IoMdLink />
                 </span>
 
-                <div className="flex flex-col gap-2">
-                  <p className="text-zinc-800 font-medium">{link.shortLink}</p>
+                <div className="flex flex-col gap-2 grow min-w-0">
+                  <p className="text-zinc-800 font-medium truncate">
+                    {link.shortLink}
+                  </p>
 
                   <p className="text-zinc-500 text-sm truncate">
                     {link.originalLink}
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-2 ml-auto">
+                <div className="flex-col gap-2 ml-auto shrink-0 hidden md:flex">
                   <p className="text-zinc-800 font-medium">
                     {link.clicks} Clicks
                   </p>

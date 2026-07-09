@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdLink } from "react-icons/io";
 import { IoLockClosedOutline } from "react-icons/io5";
 import Button from "../../Components/Common/Button";
+import useCreateLink from "../../hooks/useCreateLink";
 
 function CreateLink() {
+  const [formData, setFormData] = useState({
+    originalUrl: "",
+    title: "",
+    slug: "",
+    isPasswordProtected: false,
+    password: "",
+    isOneTimeUse: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const createLinkMutation = useCreateLink();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    createLinkMutation.mutate(formData);
+  };
+
   return (
-    <main className="w-full h-full flex justify-center items-center pb-4">
-      <form className="w-full max-w-160 p-8 border border-blue-500/10 bg-blue-500/3 rounded-2xl shadow-[0_0px_10px_rgba(0,0,0,0.05)]">
+    <main className="w-full min-h-full flex justify-center items-center pb-4">
+      <form
+        className="w-full max-w-160 p-8 border border-blue-500/10 bg-blue-500/3 rounded-2xl shadow-[0_0px_10px_rgba(0,0,0,0.05)]"
+        onSubmit={handleSubmit}
+      >
         <h1 className="text-2xl font-semibold text-zinc-800 mb-6 flex gap-2 items-center">
           <IoMdLink className="text-4xl text-blue-500" />
           Create New Link
@@ -24,12 +53,31 @@ function CreateLink() {
               type="url"
               id="originalUrl"
               name="originalUrl"
+              value={formData.originalUrl}
+              onChange={handleChange}
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="customSlug" className="text-lg">
+          <label htmlFor="title" className="text-lg">
+            Title <span className="text-gray-500">(Optional)</span>
+          </label>
+          <div className="h-16 md:w-160 max-w-full p-2 rounded-xl border-2 border-zinc-200 flex justify-between items-center focus-within:border-blue-500 duration-200">
+            <input
+              placeholder="Enter a title for your link"
+              className="w-full h-full outline-0 border-0 px-4 text-xl"
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 mb-4">
+          <label htmlFor="slug" className="text-lg">
             Custom Slug <span className="text-gray-500">(Optional)</span>
           </label>
           <div className="h-16 md:w-160 max-w-full p-2 rounded-xl border-2 border-zinc-200 flex justify-between items-center focus-within:border-blue-500 duration-200">
@@ -40,8 +88,10 @@ function CreateLink() {
               placeholder="Enter your custom slug"
               className="w-full h-full outline-0 border-0 px-4 text-xl"
               type="text"
-              id="customSlug"
-              name="customSlug"
+              id="slug"
+              name="slug"
+              value={formData.slug}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -52,7 +102,7 @@ function CreateLink() {
           </h3>
 
           <div className="flex flex-col gap-2 mb-4">
-            <label htmlFor="passwordProtected" className="text-lg">
+            <label htmlFor="password" className="text-lg">
               Password Protected{" "}
               <span className="text-gray-500">(Optional)</span>
             </label>
@@ -62,8 +112,10 @@ function CreateLink() {
                 placeholder="Enter your password"
                 className="w-full h-full outline-0 border-0 px-4 text-xl"
                 type="password"
-                id="passwordProtected"
-                name="passwordProtected"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -71,11 +123,13 @@ function CreateLink() {
           <div className="flex gap-2 mb-4 items-center">
             <input
               type="checkbox"
-              id="oneTimeUse"
-              name="oneTimeUse"
+              id="isOneTimeUse"
+              name="isOneTimeUse"
               className="w-5 h-5 accent-blue-500 cursor-pointer"
+              checked={formData.isOneTimeUse}
+              onChange={handleChange}
             />
-            <label htmlFor="oneTimeUse" className="text-lg">
+            <label htmlFor="isOneTimeUse" className="text-lg">
               One Time Link (expires after first use){" "}
               <span className="text-gray-500">(Optional)</span>
             </label>

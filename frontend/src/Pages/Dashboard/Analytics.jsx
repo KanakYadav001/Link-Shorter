@@ -1,32 +1,51 @@
-import React from "react";
+import useAnalytics from "@/hooks/useAnalytics";
+import React, { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoMdLink } from "react-icons/io";
 import { TbHandClick } from "react-icons/tb";
 
 function Analytics() {
-  const analyticsData = [
-    {
-      logo: <IoMdLink />,
-      title: "Total Links",
-      value: "1,234",
-      color: "bg-blue-500/10 text-blue-500",
-    },
-    {
-      logo: <TbHandClick />,
-      title: "Total Clicks",
-      value: "5,678",
-      color: "bg-green-500/10 text-green-500",
-    },
-    {
-      logo: <FaEye />,
-      title: "Unique Visitors",
-      value: "987",
-      color: "bg-purple-500/10 text-purple-500",
-    },
-  ];
+  const [analyticsData, setAnalyticsData] = useState([]);
+
+  const { data, isLoading, isError, error } = useAnalytics();
+
+  console.log(data?.data);
+
+  useEffect(() => {
+    if (data?.data) {
+      setAnalyticsData([
+        {
+          logo: <IoMdLink />,
+          title: "Total Links",
+          value: data.data.totalLinks,
+          color: "bg-blue-500/10 text-blue-500",
+        },
+        {
+          logo: <TbHandClick />,
+          title: "Total Clicks",
+          value: data.data.totalClicks,
+          color: "bg-green-500/10 text-green-500",
+        },
+        {
+          logo: <FaEye />,
+          title: "Unique Visitors",
+          value: data.data.totalUniqueClicks,
+          color: "bg-purple-500/10 text-purple-500",
+        },
+      ]);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error: {error.message}</p>;
+  }
   return (
     <main className="w-full pb-4">
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-6">
         {analyticsData.map((data, index) => (
           <div
             key={index}

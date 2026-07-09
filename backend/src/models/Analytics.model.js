@@ -7,6 +7,8 @@ const AnalyticsSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Links",
       required: true,
+      unique: true,
+      index: true,
     },
     totalClicks: {
       type: Number,

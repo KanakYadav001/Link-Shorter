@@ -38,7 +38,7 @@ function DashboardLayout() {
 
   return (
     <main className="h-screen w-full flex">
-      <div className="h-full w-1/6 border-r border-zinc-200 p-6 shrink-0">
+      <div className="h-full w-1/6 border-r border-zinc-200 p-6 shrink-0 hidden md:flex flex-col">
         <Logo />
 
         <nav className="mt-8 flex flex-col gap-4">
