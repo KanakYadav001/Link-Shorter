@@ -7,50 +7,10 @@ import { FaEye } from "react-icons/fa";
 import useUser from "../../hooks/useUser";
 import { Link } from "react-router";
 import useAnalytics from "@/hooks/useAnalytics";
+import useLinks from "@/hooks/useLinks.";
 
 function Dashboard() {
-  const [analyticsData, setAnalyticsData] = useState([
-    {
-      logo: <IoMdLink />,
-      title: "Total Links",
-      value: "1,234",
-      color: "bg-blue-500/10 text-blue-500",
-    },
-    {
-      logo: <TbHandClick />,
-      title: "Total Clicks",
-      value: "5,678",
-      color: "bg-green-500/10 text-green-500",
-    },
-    {
-      logo: <FaEye />,
-      title: "Unique Visitors",
-      value: "987",
-      color: "bg-purple-500/10 text-purple-500",
-    },
-  ]);
-
-  const recentLinks = [
-    {
-      shortLink: "https://linkshorter.com/abc123",
-      originalLink:
-        "https://www.example.com/very/long/url/that/needs/to/be/shortened",
-      clicks: 123,
-      uniqueVisitors: 45,
-    },
-    {
-      shortLink: "https://linkshorter.com/xyz456",
-      originalLink: "https://www.example.com/another/long/url/to/shorten",
-      clicks: 456,
-      uniqueVisitors: 78,
-    },
-    {
-      shortLink: "https://linkshorter.com/def789",
-      originalLink: "https://www.example.com/yet/another/long/url/to/shorten",
-      clicks: 789,
-      uniqueVisitors: 12,
-    },
-  ];
+  const [analyticsData, setAnalyticsData] = useState([]);
 
   const { data: user, isLoading, isError } = useUser();
   const {
@@ -59,6 +19,12 @@ function Dashboard() {
     isError: isAnalyticsError,
     error: analyticsError,
   } = useAnalytics();
+  const {
+    data: links,
+    isLoading: isLinksLoading,
+    isError: isLinksError,
+    error: linksError,
+  } = useLinks();
 
   useEffect(() => {
     if (analytics?.data) {
@@ -116,19 +82,35 @@ function Dashboard() {
       </header>
 
       <div className="grid md:grid-cols-3 gap-6 my-8">
-        {analyticsData.map((data, index) => (
-          <div
-            key={index}
-            className="w-full p-6 border border-zinc-200 rounded-xl shadow-[0_0px_10px_rgba(0,0,0,0.05)] flex flex-col items-start"
-          >
-            <span className={`p-4 ${data.color} rounded-xl text-2xl mb-4`}>
-              {data.logo}
-            </span>
-
-            <h2 className="text-zinc-500">{data.title}</h2>
-            <p className="text-3xl font-semibold text-zinc-800">{data.value}</p>
+        {analyticsData.length === 0 ? (
+          <div className="col-span-3 text-center py-8">
+            {isAnalyticsLoading ? (
+              <p className="text-zinc-500">Loading analytics...</p>
+            ) : isAnalyticsError ? (
+              <p className="text-red-500">
+                Error fetching analytics: {analyticsError.message}
+              </p>
+            ) : (
+              <p className="text-zinc-500">No analytics data available.</p>
+            )}
           </div>
-        ))}
+        ) : (
+          analyticsData.map((data, index) => (
+            <div
+              key={index}
+              className="w-full p-6 border border-zinc-200 rounded-xl shadow-[0_0px_10px_rgba(0,0,0,0.05)] flex flex-col items-start"
+            >
+              <span className={`p-4 ${data.color} rounded-xl text-2xl mb-4`}>
+                {data.logo}
+              </span>
+
+              <h2 className="text-zinc-500">{data.title}</h2>
+              <p className="text-3xl font-semibold text-zinc-800">
+                {data.value}
+              </p>
+            </div>
+          ))
+        )}
       </div>
 
       <div className="w-full rounded-xl border border-zinc-200 shadow-[0_0px_10px_rgba(0,0,0,0.05)] my-8">
@@ -138,14 +120,22 @@ function Dashboard() {
         </div>
 
         <div className="w-full">
-          {recentLinks.length === 0 ? (
-            <p className="text-zinc-500 text-center py-8">
-              No recent links found.
-            </p>
+          {links?.data?.length === 0 ? (
+            <div className="col-span-3 text-center py-8">
+              {isLinksLoading ? (
+                <p className="text-zinc-500">Loading links...</p>
+              ) : isLinksError ? (
+                <p className="text-red-500">
+                  Error fetching links: {linksError.message}
+                </p>
+              ) : (
+                <p className="text-zinc-500">No links available.</p>
+              )}
+            </div>
           ) : (
-            recentLinks.map((link, index) => (
+            links?.data?.slice(0, 3).map((link) => (
               <div
-                key={index}
+                key={link._id}
                 className="flex items-center gap-4 px-6 py-4 border-t border-b border-zinc-200 hover:bg-blue-50 transition-colors cursor-pointer"
               >
                 <span className="p-3 bg-blue-500/10 text-blue-500 rounded-xl text-xl">
@@ -162,19 +152,17 @@ function Dashboard() {
 
                   <Link
                     className="text-zinc-500 text-sm truncate hover:text-blue-500 transition-colors"
-                    to={link.originalLink}
+                    to={link.originalUrl}
                   >
-                    {link.originalLink}
+                    {link.originalUrl}
                   </Link>
                 </div>
 
                 <div className="flex-col gap-2 ml-auto shrink-0 hidden md:flex">
-                  <p className="text-zinc-800 font-medium">
-                    {link.clicks} Clicks
-                  </p>
+                  <p className="text-zinc-800 font-medium">{0} Clicks</p>
 
                   <p className="text-zinc-500 text-sm truncate">
-                    {link.uniqueVisitors} Unique Visitors
+                    {0} Unique Visitors
                   </p>
                 </div>
               </div>
