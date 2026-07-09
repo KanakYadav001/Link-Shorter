@@ -25,12 +25,7 @@ Frontend URL: https://github.com/anuragbansall/
 
 ### Video Walkthrough
 
-<p align="center">
-    <video controls width="100%" max-width="960">
-        <source src="media/Demo.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-    </video>
-</p>
+[Watch the demo video](media/Demo.mp4)
 
 ### Landing Page
 
