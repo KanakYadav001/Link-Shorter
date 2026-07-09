@@ -6,7 +6,7 @@ export const createLink = async (formData) => {
     title: formData.title,
     slug: formData.slug,
     password: {
-      isPasswordProtected: formData.isPasswordProtected,
+      isPasswordProtected: formData.password ? true : false,
       value: formData.password,
     },
     isOneTimeUse: formData.isOneTimeUse,
