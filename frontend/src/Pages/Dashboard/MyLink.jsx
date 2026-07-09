@@ -5,6 +5,7 @@ import { MdDeleteOutline, MdOutlineContentCopy } from "react-icons/md";
 import useLinks from "../../hooks/useLinks.";
 import useDeleteLink from "../../hooks/useDeleteLink";
 import { Link } from "react-router";
+import { successToast } from "@/utils/toast";
 
 function MyLink() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +29,8 @@ function MyLink() {
       .catch((err) => {
         console.error("Failed to copy link: ", err);
       });
+
+    successToast("Link copied to clipboard!");
   };
 
   const handleSearch = (e) => {
