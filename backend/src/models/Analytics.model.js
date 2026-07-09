@@ -24,8 +24,6 @@ const AnalyticsSchema = new mongoose.Schema(
   },
 );
 
-AnalyticsSchema.index({ linkId: 1 });
-
 AnalyticsSchema.virtual("link", {
   ref: "Links",
   localField: "linkId",
