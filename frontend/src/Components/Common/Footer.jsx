@@ -8,19 +8,19 @@ function Footer() {
   const socialLinks = [
     {
       name: "Twitter",
-      url: "https://twitter.com/",
+      url: "https://x.com/Kanakya56614223",
       icons: <FaXTwitter />,
       hoverColor: "hover:text-gray-900",
     },
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/",
+      url: "https://www.linkedin.com/in/kanakyadav01/",
       icons: <FaLinkedin />,
       hoverColor: "hover:text-blue-700",
     },
     {
       name: "GitHub",
-      url: "https://github.com/",
+      url: "https://github.com/KanakYadav001",
       icons: <FaGithub />,
       hoverColor: "hover:text-gray-800",
     },
